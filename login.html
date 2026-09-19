@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <section class="auth-showcase">
+        <span class="brand-mark">CR</span>
+        <p class="eyebrow">Client operations platform</p>
+        <h1>Turn every requirement into a clear next step.</h1>
+        <p class="auth-lead">Capture client needs, assess project fit, and keep your delivery pipeline well organized from intake to approval.</p>
+        <div class="showcase-stats" aria-label="System highlights">
+            <div>
+                <strong>Smart intake</strong>
+                <span>Structured client briefs</span>
+            </div>
+            <div>
+                <strong>Priority view</strong>
+                <span>Track urgency instantly</span>
+            </div>
+            <div>
+                <strong>Decision-ready</strong>
+                <span>Recommend solution paths</span>
+            </div>
+        </div>
+        <div class="showcase-line"><span></span><span></span><span></span></div>
+    </section>
+    <section class="form-card auth-card">
+        <span class="form-kicker">Welcome back</span>
+        <h2>Sign in to ClientReq</h2>
+        <p class="subtitle">Continue managing your client requirements.</p>
+
+        <form method="POST" aria-label="Login form">
+            <label for="username">Username</label>
+            <input id="username" type="text" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <div class="password-field">
+                <input id="password" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                <button type="button" class="password-toggle" data-password-toggle data-password-target="password" aria-label="Show password" title="Show password">
+                    <svg class="password-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg>
+                </button>
+            </div>
+
+            <button type="submit">Sign in <span aria-hidden="true">&#8594;</span></button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if request.args.get('registered') %}
+            <p class="success">Account created. Sign in to continue.</p>
+        {% endif %}
+
+        <p class="auth-switch">New to ClientReq? <a href="{{ url_for('register') }}">Create an account <span aria-hidden="true">&#8594;</span></a></p>
+    </section>
+</div>
+{% endblock %}

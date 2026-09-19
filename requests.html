@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}All Requests{% endblock %}
+
+{% block content %}
+<section class="page-header request-header">
+    <div>
+        <p class="eyebrow">Repository</p>
+        <h1>All Project Requests</h1>
+    </div>
+    <div class="page-header-meta">
+        <span class="meta-pill">{{ requests|length }} total</span>
+    </div>
+</section>
+
+<form method="GET" class="form-card filter-card">
+    <input type="text" name="search" placeholder="Search client or project title" value="{{ search }}">
+
+    <select name="industry" title="Filter by industry">
+        <option value="">All Industries</option>
+        {% for i in industries %}
+            <option value="{{ i }}" {% if selected_industry == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="category" title="Filter by category">
+        <option value="">All Categories</option>
+        {% for c in categories %}
+            <option value="{{ c }}" {% if selected_category == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="status" title="Filter by status">
+        <option value="">All Status</option>
+        <option value="New" {% if selected_status == "New" %}selected{% endif %}>New</option>
+        <option value="Under Review" {% if selected_status == "Under Review" %}selected{% endif %}>Under Review</option>
+        <option value="Requirement Clarification" {% if selected_status == "Requirement Clarification" %}selected{% endif %}>Requirement Clarification</option>
+        <option value="Approved" {% if selected_status == "Approved" %}selected{% endif %}>Approved</option>
+        <option value="Rejected" {% if selected_status == "Rejected" %}selected{% endif %}>Rejected</option>
+        <option value="Completed" {% if selected_status == "Completed" %}selected{% endif %}>Completed</option>
+    </select>
+
+    <div class="filter-actions">
+        <button type="submit">Search / Filter</button>
+        <a href="{{ url_for('view_requests') }}" class="link-button">Clear</a>
+    </div>
+</form>
+
+{% if requests %}
+    <div class="table-shell">
+        <table>
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Client Name</th>
+                    <th>Project Title</th>
+                    <th>Industry</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Recommendation</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for req in requests %}
+            <tr>
+                <td><a href="{{ url_for('request_detail', request_id=req.id) }}">{{ req.id }}</a></td>
+                <td>{{ req.client_name }}</td>
+                <td>{{ req.project_title }}</td>
+                <td>{{ req.industry }}</td>
+                <td>
+                    {% set priority_class = 'priority-low' if req.priority == 'Low' else 'priority-medium' if req.priority == 'Medium' else 'priority-high' %}
+                    <span class="badge {{ priority_class }}">{{ req.priority }}</span>
+                </td>
+                <td>
+                    {% set status_class = 'status-new' if req.status == 'New' else 'status-review' if req.status == 'Under Review' else 'status-approved' if req.status == 'Approved' else 'status-rejected' %}
+                    <span class="badge {{ status_class }}">{{ req.status }}</span>
+                </td>
+                <td>
+                    <div class="recommendation-list">
+                        {% for r in req.recommendation %}
+                            <span>{{ r }}</span>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="empty-state">No requests found.</p>
+{% endif %}
+{% endblock %}

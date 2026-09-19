@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Project Requirement Management System{% endblock %}
+
+{% block content %}
+<div class="landing-page">
+    <header class="landing-nav">
+        <a class="landing-brand" href="{{ url_for('landing') }}">
+            <span class="landing-brand-mark">CR</span>
+            <span><strong>ClientReq</strong><small>Requirement intelligence</small></span>
+        </a>
+        <a href="{{ url_for('login') }}" class="landing-login">Sign in <span aria-hidden="true">&#8594;</span></a>
+    </header>
+
+    <section class="landing-hero">
+        <div class="landing-copy">
+            <p class="landing-eyebrow"><span></span> Built for sharper client conversations</p>
+            <h1>Turn scattered requests into <em>clear direction.</em></h1>
+            <p class="landing-lead">A focused workspace for capturing client needs, discovering the right solution path, and moving every project from first conversation to confident decision.</p>
+            <div class="landing-actions">
+                <a href="{{ url_for('login') }}" class="btn landing-primary">Open workspace <span aria-hidden="true">&#8594;</span></a>
+                <a href="#capabilities" class="landing-secondary">Explore capabilities <span aria-hidden="true">&#8595;</span></a>
+            </div>
+            <div class="landing-proof"><span class="proof-dot"></span><strong>One organized view</strong><span>for every client requirement</span></div>
+        </div>
+
+        <div class="landing-visual" aria-label="ClientReq dashboard preview">
+            <div class="preview-window">
+                <div class="preview-topbar"><span class="preview-dots"><i></i><i></i><i></i></span><span>clientreq / overview</span><span class="preview-live"><b></b> LIVE</span></div>
+                <div class="preview-body">
+                    <aside class="preview-sidebar"><strong>CR</strong><span class="preview-active"></span><span></span><span></span><span></span></aside>
+                    <div class="preview-content">
+                        <div class="preview-heading"><div><small>OPERATIONS OVERVIEW</small><strong>Good morning, team.</strong></div><span>Today &#8599;</span></div>
+                        <div class="preview-metrics"><div><small>TOTAL REQUESTS</small><strong>24</strong><b class="up">+12%</b></div><div><small>UNDER REVIEW</small><strong>08</strong><b>active</b></div><div><small>HIGH PRIORITY</small><strong>03</strong><b class="hot">attention</b></div></div>
+                        <div class="preview-lower"><div class="preview-chart"><small>REQUEST FLOW</small><div class="chart-lines"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="chart-axis"><span>Mon</span><span>Wed</span><span>Fri</span><span>Sun</span></div></div><div class="preview-list"><small>RECENT REQUESTS</small><p><b>Northstar Health</b><span class="preview-pill">Review</span></p><p><b>Horizon Retail</b><span class="preview-pill green">Approved</span></p><p><b>Atlas Finance</b><span class="preview-pill amber">New</span></p></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="preview-float"><span>AI RECOMMENDATION</span><strong>Digital workflow</strong><small>Matched to project signals</small><b>&#10003;</b></div>
+        </div>
+    </section>
+
+    <section class="landing-strip"><span>One workspace</span><i></i><span>Smarter intake</span><i></i><span>Faster decisions</span><i></i><span>Better delivery</span></section>
+
+    <section class="landing-capabilities" id="capabilities">
+        <div class="section-intro"><p class="landing-eyebrow"><span></span> Everything in one rhythm</p><h2>From first note to next move.</h2><p>Give your team a calmer way to understand, prioritize, and act on project requirements.</p></div>
+        <div class="features">
+            <div class="feature-card"><span class="feature-index">01</span><h3>Structured intake</h3><p>Capture the context behind every request with a consistent, complete project brief.</p><a href="{{ url_for('login') }}">Explore intake <span>&#8594;</span></a></div>
+            <div class="feature-card feature-card-accent"><span class="feature-index">02</span><h3>Guided recommendations</h3><p>Turn requirement signals into useful solution categories your team can discuss immediately.</p><a href="{{ url_for('login') }}">See the intelligence <span>&#8594;</span></a></div>
+            <div class="feature-card"><span class="feature-index">03</span><h3>Decision visibility</h3><p>Keep status, priority, reviewer context, and client details visible from one focused view.</p><a href="{{ url_for('login') }}">View the workspace <span>&#8594;</span></a></div>
+        </div>
+    </section>
+
+    <section class="about-section landing-about"><div><p class="landing-eyebrow"><span></span> A better starting point</p><h2>Make the first conversation count.</h2></div><p>ClientReq brings the important pieces of requirement management into one calm, professional workspace so teams can spend less time sorting information and more time shaping the right outcome.</p></section>
+</div>
+
+{% endblock %}

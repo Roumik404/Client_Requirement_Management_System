@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Client Requirement System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% if session.get('logged_in') %}authenticated-page{% else %}login-page{% endif %}">
+    {% if session.get('logged_in') %}
+        <div class="app-layout">
+            <aside class="sidebar" data-sidebar>
+                <button type="button" class="sidebar-close" data-sidebar-close aria-label="Close navigation menu">&#8592;</button>
+                <div class="brand-block">
+                    <span class="brand-mark">CR</span>
+                    <span>
+                        <span class="brand-text">ClientReq</span>
+                        <small>Requirement workspace</small>
+                    </span>
+                </div>
+
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch color theme"><span class="theme-icon">&#9788;</span><span>Dark theme</span><span class="toggle-track"><span></span></span></button>
+
+                <div class="sidebar-label">Workspace</div>
+                <nav class="nav-links" aria-label="Main navigation">
+                    <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}"><span class="nav-icon">&#9632;</span>Overview</a>
+                    <a href="{{ url_for('view_requests') }}" class="nav-item {% if request.endpoint == 'view_requests' %}active{% endif %}"><span class="nav-icon">&#9776;</span>Requests</a>
+                    <a href="{{ url_for('new_request') }}" class="nav-item {% if request.endpoint == 'new_request' %}active{% endif %}"><span class="nav-icon">&#43;</span>New Request</a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+                        <button type="submit" class="nav-logout"><span class="nav-icon">&#8592;</span>Logout</button>
+                    </form>
+                </div>
+            </aside>
+            <div class="workspace">
+                <header class="workspace-header">
+                    <div class="header-brand-group">
+                        <button type="button" class="menu-toggle" data-sidebar-toggle aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
+                        <div class="header-brand">
+                            <span class="header-brand-mark">CR</span>
+                            <div>
+                                <span class="header-brand-name">ClientReq</span>
+                                <span class="workspace-kicker">Client operations</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-context"><strong>{% block header_title %}Requirement workspace{% endblock %}</strong></div>
+                    <span class="workspace-status"><span></span>System online</span>
+                </header>
+    {% endif %}
+    <main>{% block content %}{% endblock %}</main>
+    {% if session.get('logged_in') %}
+            </div>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

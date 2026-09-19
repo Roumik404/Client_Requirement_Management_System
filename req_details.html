@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Details{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <script>
+            alert("{{ message }}");
+        </script>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Request</p>
+        <h1>Request Details</h1>
+    </div>
+</section>
+
+<div class="detail-card">
+
+    <h2>Request Information</h2>
+
+    <p><strong>Request ID:</strong> {{ req.id }}</p>
+
+    <p>
+        <strong>Status:</strong>
+        <span class="badge">
+            {{ req.status }}
+        </span>
+    </p>
+
+    <p>
+        <strong>Priority:</strong>
+        <span class="badge">
+            {{ req.priority }}
+        </span>
+    </p>
+
+    <p>
+        <strong>Last Updated:</strong>
+        {{ req.last_updated }}
+    </p>
+
+    <h2>Client Information</h2>
+
+    <p><strong>Client / Organization:</strong> {{ req.client_name }}</p>
+    <p><strong>Contact Person:</strong> {{ req.contact_person }}</p>
+    <p><strong>Email:</strong> {{ req.email }}</p>
+    <p><strong>Phone:</strong> {{ req.phone }}</p>
+    <p><strong>Industry:</strong> {{ req.industry }}</p>
+
+    <h2>Project Requirements</h2>
+
+    <p><strong>Project Title:</strong> {{ req.project_title }}</p>
+
+    <p>
+        <strong>Business Problem:</strong><br>
+        {{ req.business_problem }}
+    </p>
+
+    <p>
+        <strong>Current Process:</strong><br>
+        {{ req.current_process }}
+    </p>
+
+    <p>
+        <strong>Expected Outcome:</strong><br>
+        {{ req.expected_outcome }}
+    </p>
+
+    <p>
+        <strong>Required Features:</strong><br>
+        {{ req.features }}
+    </p>
+
+    <p>
+        <strong>Preferred Technology:</strong>
+        {{ req.technology }}
+    </p>
+
+    <p>
+        <strong>Additional Requirements:</strong><br>
+        {{ req.additional_requirements }}
+    </p>
+
+    <h2>Recommended Solution</h2>
+
+    {% for r in req.recommendation %}
+        <p>
+            <span class="badge">
+                {{ r }}
+            </span>
+        </p>
+    {% endfor %}
+
+    {% if req.notification %}
+    <h2>Client Notification</h2>
+
+    <div class="success-box">
+        <p>{{ req.notification }}</p>
+    </div>
+    {% endif %}
+
+    {% if req.comments %}
+    <h2>Latest Reviewer Comments</h2>
+
+    <div class="detail-box">
+        <p>{{ req.comments }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<h2>Update Request</h2>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST" class="form-card">
+
+    <label for="status">Status</label>
+
+    <select
+        id="status"
+        name="status"
+        title="Request status"
+        required
+    >
+        <option value="New"
+            {% if req.status == "New" %}selected{% endif %}>
+            New
+        </option>
+
+        <option value="Under Review"
+            {% if req.status == "Under Review" %}selected{% endif %}>
+            Under Review
+        </option>
+
+        <option value="Requirement Clarification"
+            {% if req.status == "Requirement Clarification" %}selected{% endif %}>
+            Requirement Clarification
+        </option>
+
+        <option value="Approved"
+            {% if req.status == "Approved" %}selected{% endif %}>
+            Approved
+        </option>
+
+        <option value="Rejected"
+            {% if req.status == "Rejected" %}selected{% endif %}>
+            Rejected
+        </option>
+
+        <option value="Completed"
+            {% if req.status == "Completed" %}selected{% endif %}>
+            Completed
+        </option>
+    </select>
+
+    <label for="priority">Priority</label>
+
+    <select
+        id="priority"
+        name="priority"
+        title="Request priority"
+        required
+    >
+        <option value="High"
+            {% if req.priority == "High" %}selected{% endif %}>
+            High
+        </option>
+
+        <option value="Medium"
+            {% if req.priority == "Medium" %}selected{% endif %}>
+            Medium
+        </option>
+
+        <option value="Low"
+            {% if req.priority == "Low" %}selected{% endif %}>
+            Low
+        </option>
+    </select>
+
+    <label for="comments">Reviewer Comments</label>
+
+    <textarea
+        id="comments"
+        name="comments"
+        rows="5"
+        placeholder="Enter reviewer comments..."
+    >{{ req.comments }}</textarea>
+
+    <button type="submit">
+        Update Request
+    </button>
+
+</form>
+
+{% endblock %}

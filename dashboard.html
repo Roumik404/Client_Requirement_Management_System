@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="page-header dashboard-hero">
+    <div class="hero-copy">
+        <p class="eyebrow">Operations overview</p>
+        <h1>Client Requirement Management System</h1>
+        <p class="hero-subtitle">Monitor incoming requests, prioritize follow-ups, and keep every client engagement moving with a clear delivery view.</p>
+    </div>
+    <div class="hero-panel">
+        <div class="coverage-heading"><span class="hero-pill">Live coverage</span><span class="coverage-pulse"><i></i> Live</span></div>
+        <div class="hero-mini-grid">
+            <div>
+                <small>Pending</small>
+                <strong>{{ new }}</strong>
+                <span class="coverage-rate">{{ ((new / total) * 100)|round|int if total else 0 }}% of flow</span>
+            </div>
+            <div>
+                <small>Review</small>
+                <strong>{{ review }}</strong>
+                <span class="coverage-rate">{{ review_rate }}% of flow</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="dashboard-metrics">
+    <div class="metric-card metric-featured">
+        <div class="metric-header"><span>Total Requests</span><span class="metric-icon">↗</span></div>
+        <p>{{ total }}</p>
+        <div class="metric-foot"><span class="trend-up">+{{ active }} active</span><span>all projects</span></div>
+    </div>
+    <div class="metric-card rate-card">
+        <div class="metric-header"><span>Completion rate</span><span class="metric-icon">✓</span></div>
+        <p>{{ completion_rate }}<small>%</small></p>
+        <div class="progress-track"><span style="width: {{ completion_rate }}%"></span></div>
+        <div class="metric-foot"><span>{{ completed }} completed</span><span>delivery</span></div>
+    </div>
+    <div class="metric-card rate-card">
+        <div class="metric-header"><span>Review rate</span><span class="metric-icon">◌</span></div>
+        <p>{{ review_rate }}<small>%</small></p>
+        <div class="progress-track teal"><span style="width: {{ review_rate }}%"></span></div>
+        <div class="metric-foot"><span>{{ review }} in review</span><span>attention</span></div>
+    </div>
+    <div class="metric-card alert-card rate-card">
+        <div class="metric-header"><span>Priority load</span><span class="metric-icon">!</span></div>
+        <p>{{ priority_rate }}<small>%</small></p>
+        <div class="progress-track hot"><span style="width: {{ priority_rate }}%"></span></div>
+        <div class="metric-foot"><span>{{ high }} high priority</span><span>watchlist</span></div>
+    </div>
+</div>
+
+<div class="dashboard-visuals">
+    <div class="detail-card flow-card">
+        <div class="detail-head"><div><p class="eyebrow">Live analytics</p><h2>Request flow</h2></div><span class="detail-tag">{{ total }} total</span></div>
+        <div class="flow-chart">
+            {% set flow_items = [('New', new, 'blue'), ('Review', review, 'teal'), ('Approved', approved, 'green'), ('Completed', completed, 'violet'), ('High priority', high, 'hot')] %}
+            {% for label, value, color in flow_items %}
+            <div class="flow-column"><div class="flow-value">{{ value }}</div><div class="flow-bar"><span class="{{ color }}" style="height: {{ ((value / total) * 100)|round|int if total else 4 }}%"></span></div><small>{{ label }}</small></div>
+            {% endfor %}
+        </div>
+        <div class="flow-legend"><span><i class="legend-dot blue"></i>Incoming work</span><span><i class="legend-dot teal"></i>In progress</span><span><i class="legend-dot green"></i>Delivered</span></div>
+    </div>
+
+    <div class="detail-card activity-card">
+        <div class="detail-head"><div><p class="eyebrow">Workspace pulse</p><h2>Recent requests</h2></div><a class="activity-link" href="{{ url_for('view_requests') }}">View all &#8599;</a></div>
+        {% if recent_requests %}
+            <div class="activity-list">
+            {% for req in recent_requests %}
+                <a class="activity-item" href="{{ url_for('request_detail', request_id=req.id) }}"><span class="activity-avatar">{{ req.client_name[:2]|upper }}</span><span class="activity-copy"><strong>{{ req.client_name }}</strong><small>{{ req.project_title }}</small></span><span class="activity-status {{ 'status-green' if req.status in ['Approved', 'Completed'] else 'status-amber' if req.status == 'Under Review' else 'status-blue' }}">{{ req.status }}</span></a>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No requests yet. New work will appear here.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="detail-card">
+        <div class="detail-head">
+            <h2>Solution Categories</h2>
+            <span class="detail-tag">Insights</span>
+        </div>
+        {% for category, count in category_counts.items() %}
+            <p class="stat-row"><span>{{ category }}</span><strong>{{ count }}</strong></p>
+        {% endfor %}
+    </div>
+
+    <div class="detail-card">
+        <div class="detail-head">
+            <h2>Industry Distribution</h2>
+            <span class="detail-tag">Clients</span>
+        </div>
+        {% if industry_counts %}
+            {% for industry, count in industry_counts.items() %}
+                <p class="stat-row"><span>{{ industry }}</span><strong>{{ count }}</strong></p>
+            {% endfor %}
+        {% else %}
+            <p>No requests yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
