@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}New Project Request{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Capture</p>
+        <h1>New Project Request</h1>
+    </div>
+</section>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST" class="form-card request-form">
+    <div class="form-intro">
+        <div>
+            <span class="form-kicker">Client intake</span>
+            <h2>Build a complete project brief</h2>
+            <p>Capture the context, goals, and delivery needs required for a confident recommendation.</p>
+        </div>
+        <span class="form-step">01 <small>/ 01</small></span>
+    </div>
+
+    <section class="form-section">
+        <div class="section-heading">
+            <span class="section-number">01</span>
+            <div>
+                <h2>Client Information</h2>
+                <p>Tell us who the project is for and how to reach them.</p>
+            </div>
+        </div>
+        <div class="field-grid">
+            <div class="field"><label for="client_name">Client / Organization Name</label><input id="client_name" type="text" name="client_name" placeholder="Enter client or organization name" value="{{ form_data.get('client_name', '') }}" required></div>
+            <div class="field"><label for="contact_person">Contact Person</label><input id="contact_person" type="text" name="contact_person" placeholder="Enter contact person's name" value="{{ form_data.get('contact_person', '') }}" required></div>
+            <div class="field"><label for="email">Email</label><input id="email" type="email" name="email" placeholder="name@example.com" value="{{ form_data.get('email', '') }}" required></div>
+            <div class="field"><label for="phone">Phone Number</label><input id="phone" type="tel" name="phone" placeholder="Enter 10-digit phone number" value="{{ form_data.get('phone', '') }}" required></div>
+            <div class="field field-wide"><label for="industry">Industry</label><input id="industry" type="text" name="industry" placeholder="e.g. Healthcare, Finance, Retail" value="{{ form_data.get('industry', '') }}" required></div>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="section-heading">
+            <span class="section-number">02</span>
+            <div>
+                <h2>Project Requirements</h2>
+                <p>Describe the opportunity so the right solution can be recommended.</p>
+            </div>
+        </div>
+        <div class="field-grid">
+            <div class="field field-wide"><label for="project_title">Project Title</label><input id="project_title" type="text" name="project_title" placeholder="Enter a concise project title" value="{{ form_data.get('project_title', '') }}" required></div>
+            <div class="field"><label for="business_problem">Business Problem</label><textarea id="business_problem" name="business_problem" placeholder="Describe the problem this project should solve" required>{{ form_data.get('business_problem', '') }}</textarea></div>
+            <div class="field"><label for="current_process">Current Process</label><textarea id="current_process" name="current_process" placeholder="Describe how this work is handled today">{{ form_data.get('current_process', '') }}</textarea></div>
+            <div class="field"><label for="expected_outcome">Expected Outcome</label><textarea id="expected_outcome" name="expected_outcome" placeholder="Describe the desired result" required>{{ form_data.get('expected_outcome', '') }}</textarea></div>
+            <div class="field"><label for="features">Required Features</label><textarea id="features" name="features" placeholder="List the features or capabilities needed" required>{{ form_data.get('features', '') }}</textarea></div>
+            <div class="field"><label for="technology">Preferred Technology</label><input id="technology" type="text" name="technology" placeholder="e.g. Python, React, AWS" value="{{ form_data.get('technology', '') }}"></div>
+            <div class="field"><label for="priority">Priority</label><select id="priority" name="priority" required><option value="">Select Priority</option><option value="High" {% if form_data.get('priority') == 'High' %}selected{% endif %}>High</option><option value="Medium" {% if form_data.get('priority') == 'Medium' %}selected{% endif %}>Medium</option><option value="Low" {% if form_data.get('priority') == 'Low' %}selected{% endif %}>Low</option></select></div>
+            <div class="field field-wide"><label for="additional_requirements">Additional Requirements</label><textarea id="additional_requirements" name="additional_requirements" placeholder="Add any other context, constraints, or preferences">{{ form_data.get('additional_requirements', '') }}</textarea></div>
+        </div>
+    </section>
+
+    <div class="form-footer">
+        <p><strong>Ready to submit?</strong><br>Your request will be analyzed automatically.</p>
+        <div class="form-actions"><a class="link-button" href="{{ url_for('dashboard') }}">Cancel</a><button type="submit">Submit Request <span aria-hidden="true">&#8594;</span></button></div>
+    </div>
+</form>
+{% endblock %}

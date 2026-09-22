@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Details{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Request</p>
+        <h1>{{ req.project_title }}</h1>
+        <p class="page-lead">{{ req.id }} · last updated {{ req.last_updated }}</p>
+    </div>
+    <a class="link-button" href="{{ url_for('view_requests') }}">&#8592; Back to repository</a>
+</section>
+
+<div class="detail-layout">
+    <div class="detail-main">
+        <section class="detail-card detail-summary">
+            <div class="detail-summary-top"><div><span class="detail-label">Client / organization</span><h2>{{ req.client_name }}</h2><p>{{ req.industry }} · {{ req.contact_person }}</p></div><div class="detail-badges"><span class="badge status-new">{{ req.status }}</span><span class="badge priority-{{ req.priority|lower }}">{{ req.priority }} priority</span></div></div>
+            <div class="detail-facts"><div><span>Contact email</span><strong>{{ req.email }}</strong></div><div><span>Phone</span><strong>{{ req.phone }}</strong></div><div><span>Request ID</span><strong>{{ req.id }}</strong></div></div>
+        </section>
+
+        <section class="detail-card detail-content">
+            <div class="detail-head"><div><p class="eyebrow">Project brief</p><h2>Requirements and context</h2></div><span class="detail-tag">Intake</span></div>
+            <div class="detail-copy-grid"><div><span>Business problem</span><p>{{ req.business_problem }}</p></div><div><span>Expected outcome</span><p>{{ req.expected_outcome }}</p></div><div><span>Current process</span><p>{{ req.current_process or 'Not provided' }}</p></div><div><span>Required features</span><p>{{ req.features }}</p></div></div>
+            <div class="detail-inline-facts"><div><span>Preferred technology</span><strong>{{ req.technology or 'Open to recommendation' }}</strong></div><div><span>Additional requirements</span><strong>{{ req.additional_requirements or 'None provided' }}</strong></div></div>
+        </section>
+
+        <section class="detail-card recommendation-card"><div class="detail-head"><div><p class="eyebrow">Solution intelligence</p><h2>Recommended direction</h2></div><span class="detail-tag">{{ req.recommendation|length }} match{% if req.recommendation|length != 1 %}es{% endif %}</span></div><p class="section-note">Based on the business problem, requested features, and technology preferences.</p><div class="recommendation-list recommendation-large">{% for r in req.recommendation %}<span>{{ r }}</span>{% endfor %}</div></section>
+    </div>
+
+    <aside class="detail-side">
+        {% if req.notification %}<div class="success-box"><span class="detail-label">Client notification</span><p>{{ req.notification }}</p></div>{% endif %}
+        {% if req.comments %}<div class="detail-box"><span class="detail-label">Latest reviewer comments</span><p>{{ req.comments }}</p></div>{% endif %}
+        <section class="form-card update-card">
+            <div class="detail-head"><div><p class="eyebrow">Workflow</p><h2>Update request</h2></div></div>
+
+    {% if req.notification %}
+    <h2>Client Notification</h2>
+
+    <div class="success-box">
+        <p>{{ req.notification }}</p>
+    </div>
+    {% endif %}
+
+    {% if req.comments %}
+    <h2>Latest Reviewer Comments</h2>
+
+    <div class="detail-box">
+        <p>{{ req.comments }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+
+    <label for="status">Status</label>
+
+    <select
+        id="status"
+        name="status"
+        title="Request status"
+        required
+    >
+        <option value="New"
+            {% if req.status == "New" %}selected{% endif %}>
+            New
+        </option>
+
+        <option value="Under Review"
+            {% if req.status == "Under Review" %}selected{% endif %}>
+            Under Review
+        </option>
+
+        <option value="Requirement Clarification"
+            {% if req.status == "Requirement Clarification" %}selected{% endif %}>
+            Requirement Clarification
+        </option>
+
+        <option value="Approved"
+            {% if req.status == "Approved" %}selected{% endif %}>
+            Approved
+        </option>
+
+        <option value="Rejected"
+            {% if req.status == "Rejected" %}selected{% endif %}>
+            Rejected
+        </option>
+
+        <option value="Completed"
+            {% if req.status == "Completed" %}selected{% endif %}>
+            Completed
+        </option>
+    </select>
+
+    <label for="priority">Priority</label>
+
+    <select
+        id="priority"
+        name="priority"
+        title="Request priority"
+        required
+    >
+        <option value="High"
+            {% if req.priority == "High" %}selected{% endif %}>
+            High
+        </option>
+
+        <option value="Medium"
+            {% if req.priority == "Medium" %}selected{% endif %}>
+            Medium
+        </option>
+
+        <option value="Low"
+            {% if req.priority == "Low" %}selected{% endif %}>
+            Low
+        </option>
+    </select>
+
+    <label for="comments">Reviewer Comments</label>
+
+    <textarea
+        id="comments"
+        name="comments"
+        rows="5"
+        placeholder="Enter reviewer comments..."
+    >{{ req.comments }}</textarea>
+
+    <button type="submit">Save changes <span aria-hidden="true">&#8594;</span></button>
+
+</form>
+        </section>
+    </aside>
+</div>
+
+{% endblock %}
